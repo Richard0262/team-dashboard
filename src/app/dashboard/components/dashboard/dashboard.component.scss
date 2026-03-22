@@ -1,0 +1,51 @@
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.titre {
+  text-align: center;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.filtres {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.btn-filtre {
+  padding: 8px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  &.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+}
+
+.message-vide {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  padding: 40px;
+}
+
+.cartes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

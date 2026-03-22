@@ -1,0 +1,22 @@
+<div class="card" [ngStyle]="niveauStyles">
+  <h3 class="nom">{{ profile.nom }}</h3>
+  <p class="poste">{{ profile.poste }}</p>
+  
+  <div class="info-row">
+    <span class="label">Statut:</span>
+    <app-status-badge [statut]="profile.statut"></app-status-badge>
+  </div>
+  
+  <div class="info-row">
+    <span class="label">Niveau:</span>
+    <span class="niveau">{{ profile.niveau }}</span>
+  </div>
+
+  <!-- Bonus: bouton changer le statut -->
+  <button 
+    *ngIf="profile.statut === 'Actif' || profile.statut === 'En pause'"
+    class="btn-toggle" 
+    (click)="toggleStatut()">
+    Changer le statut
+  </button>
+</div>

@@ -1,0 +1,7 @@
+<span class="badge" [ngClass]="{
+  'actif': statut === 'Actif',
+  'en-pause': statut === 'En pause',
+  'absent': statut === 'Absent'
+}">
+  {{ statut }}
+</span>

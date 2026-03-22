@@ -1,0 +1,39 @@
+<div class="dashboard">
+  <h1 class="titre">Team Dashboard</h1>
+
+  <!-- Bonus: filtres par statut -->
+  <div class="filtres">
+    <button 
+      class="btn-filtre" 
+      [class.active]="filtreActif === 'Tous'"
+      (click)="setFiltre('Tous')">
+      Tous
+    </button>
+    <button 
+      class="btn-filtre" 
+      [class.active]="filtreActif === 'Actifs'"
+      (click)="setFiltre('Actifs')">
+      Actifs
+    </button>
+    <button 
+      class="btn-filtre" 
+      [class.active]="filtreActif === 'Absents'"
+      (click)="setFiltre('Absents')">
+      Absents
+    </button>
+  </div>
+
+  <!-- Message si la liste est vide (bonus) -->
+  <p *ngIf="profilsFiltres.length === 0" class="message-vide">
+    Aucun profil disponible
+  </p>
+
+  <!-- *ngFor pour afficher les cartes -->
+  <div class="cartes-list">
+    <app-profile-card 
+      *ngFor="let profil of profilsFiltres" 
+      [profile]="profil"
+      (onToggleStatut)="toggleStatut($event)">
+    </app-profile-card>
+  </div>
+</div>

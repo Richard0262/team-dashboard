@@ -1,0 +1,57 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.nom {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.poste {
+  margin: 0 0 16px 0;
+  color: #666;
+  font-size: 18px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.label {
+  font-size: 16px;
+  color: #888;
+}
+
+.niveau {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.btn-toggle {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
