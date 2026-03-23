@@ -12,11 +12,9 @@
     <span class="niveau">{{ profile.niveau }}</span>
   </div>
 
-  <!-- Bonus: bouton changer le statut -->
+  <!-- Bouton pour changer le statut -->
   <button 
     *ngIf="profile.statut === 'Actif' || profile.statut === 'En pause'"
     class="btn-toggle" 
-    (click)="toggleStatut()">
-    Changer le statut
-  </button>
+    (click)="toggleStatut()">Changer le statut</button>
 </div>

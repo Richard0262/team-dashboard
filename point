@@ -1,0 +1,241 @@
+================================================================================
+               DOCUMENTATION - IMPLEMENTATION DU PROJET TEAM DASHBOARD
+================================================================================
+
+Ce fichier documente comment j'ai procédée pour implémenter chaque partie du projet
+Angular "Team Dashboard". Le projet est une application de gestion des membres
+d'une équipe avec affichage de leur statut et niveau.
+
+================================================================================
+                        STRUCTURE DU PROJET
+================================================================================
+
+Le projet est structuré comme suit:
+- src/app/dashboard/
+  ├── models/
+  │   └── profile.model.ts          (Interface TypeScript pour les profils)
+  ├── components/
+  │   ├── dashboard/                (Composant principal)
+  │   ├── profile-card/             (Carte individuelle de profil)
+  │   └── status-badge/             (Badge de statut)
+  └── dashboard.module.ts           (Module Angular)
+
+================================================================================
+                        1. MODÈLE DE DONNÉES (profile.model.ts)
+================================================================================
+
+APPROCHE:
+J'ai créé une interface TypeScript simple pour typer les données des profils.
+
+DÉTAILS D'IMPLEMENTATION:
+- Created file: src/app/dashboard/models/profile.model.ts
+- L'interface Profile contient 4 propriétés:
+  * nom: string - Nom complet du membre
+  * poste: string - Poste occupé dans l'équipe
+  * statut: 'Actif' | 'En pause' | 'Absent' - Type union pour les statuts possibles
+  * niveau: 'Junior' | 'Intermédiaire' | 'Senior' - Type union pour les niveaux
+
+Cette approche permet:
+- Une vérification de type stricque en TypeScript
+- Une autocomplétion dans l'IDE
+- Une documentation visuelle du format des données
+
+================================================================================
+                        2. COMPOSANT STATUS-BADGE
+================================================================================
+
+APPROCHE:
+J'ai créé un petit composant réutilisable pour afficher le statut avec une
+couleur différente selon l'état (Actif, En pause, Absent).
+
+FICHIERS:
+- status-badge.component.ts    (Logique du composant)
+- status-badge.component.html  (Template)
+- status-badge.component.scss  (Styles)
+
+DÉTAILS D'IMPLEMENTATION:
+
+a) Partie TypeScript (status-badge.component.ts):
+   - Utilisation de la syntaxe Angular standalone component
+   - Import de CommonModule pour les directives ngClass, ngStyle
+   - @Input() décorateur pour recevoir le statut du parent (ProfileCard)
+   - Type strict: 'Actif' | 'En pause' | 'Absent'
+
+b) Template (status-badge.component.html):
+   - Utilisation de ngClass pour appliquer des classes CSS conditionnelles
+   - Chaque statut a sa propre classe CSS:
+     * actif -> vert (#d4edda)
+     * en-pause -> jaune (#fff3cd)
+     * absent -> rouge (#f8d7da)
+
+c) Styles (status-badge.component.scss):
+   - Badge avec padding, border-radius pour forme arrondie
+   - Couleurs différentes selon la classe: vert, jaune, rouge
+   - Texte contrasté pour la lisibilité
+
+JUSTIFICATION:
+Ce composant est séparé car:
+- Il est réutilisable dans d'autres parties de l'application
+- Il suit le principe de responsabilité unique (Single Responsibility Principle)
+- Il permet de changer l'apparence du statut à un seul endroit
+
+================================================================================
+                        3. COMPOSANT PROFILE-CARD
+================================================================================
+
+APPROCHE:
+J'ai créé un composant pour afficher les informations complètes d'un membre
+de l'équipe sous forme de carte.
+
+FICHIERS:
+- profile-card.component.ts    (Logique du composant)
+- profile-card.component.html  (Template)
+- profile-card.component.scss  (Styles)
+
+DÉTAILS D'IMPLEMENTATION:
+
+a) Partie TypeScript (profile-card.component.ts):
+   - @Input() profile: Profile - Reçois les données du profil depuis le parent
+   - @Output() onToggleStatut - Émet un événement quand on clique sur le bouton
+   - Getter niveauStyles: permet de retourner un objet pour ngStyle
+     * Bordure colorée selon le niveau:
+       - Junior: bleu (#007bff)
+       - Intermédiaire: violet (#6f42c1)
+       - Senior: orange (#ffc107)
+   - Méthode toggleStatut() qui émet l'événement vers le parent
+
+b) Template (profile-card.component.html):
+   - Utilisation de [ngStyle] pour appliquer les bordures colorées
+   - Affichage du nom (h3), poste (p), niveau et statut
+   - Intégration du composant StatusBadge
+   - Bouton conditionnel: affiché seulement si statut = 'Actif' ou 'En pause'
+   - Le bouton n'apparaît PAS quand le statut est 'Absent'
+
+c) Styles (profile-card.component.scss):
+   - Carte avec:
+     * Fond blanc
+     * Border-radius 12px
+     * Ombre (box-shadow) pour l'effet de profondeur
+     * Transition au survol (transform: translateY)
+   - Typographie: taille de police adaptée pour nom (24px), poste (18px)
+
+JUSTIFICATION DES CHOIX:
+- La bordure colorée selon le niveau permet une identification visuelle rapide
+- Le bouton de changement de statut n'apparaît que pour les statuts modifiables
+- L'événement est émis vers le parent pour que Dashboard gère la logique métier
+
+================================================================================
+                        4. COMPOSANT DASHBOARD (Principal)
+================================================================================
+
+APPROCHE:
+J'ai créé le composant principal qui orchestre l'affichage de tous les profils
+et implémente la logique de filtrage.
+
+FICHIERS:
+- dashboard.component.ts    (Logique du composant)
+- dashboard.component.html  (Template)
+- dashboard.component.scss  (Styles)
+
+DÉTAILS D'IMPLEMENTATION:
+
+a) Partie TypeScript (dashboard.component.ts):
+   - Tableau de profils avec données d'exemple (4 membres)
+   - Propriété filtreActif: 'Tous' | 'Actifs' | 'Absents' (par défaut: 'Tous')
+   - Getter profilsFiltres: retourne les profils selon le filtre actif
+     * 'Tous' -> retourne tous les profils
+     * 'Actifs' -> filtre les profils avec statut 'Actif'
+     * 'Absents' -> filtre les profils avec statut 'Absent'
+   - Méthode setFiltre(): change le filtre actuel
+   - Méthode toggleStatut(): change le statut d'un profil
+     * Actif -> En pause
+     * En pause -> Actif
+     * Absent -> rien (ne peut pas être modifié)
+
+b) Template (dashboard.component.html):
+   - Titre "Team Dashboard"
+   - Boutons de filtre (Tous, Actifs, Absents)
+   - Classe conditionnelle [class.active] pour le bouton actif
+   - Message "Aucun profil disponible" si la liste filtrée est vide
+   - Boucle *ngFor avec les profilsFiltres pour afficher les cartes
+   - Binding de l'événement (onToggleStatut) vers toggleStatut()
+
+c) Styles (dashboard.component.scss):
+   - Conteneur avec max-width: 800px et margin: 0 auto (centrage)
+   - Boutons de filtre en ligne (display: flex, gap: 12px)
+   - Effet hover sur les boutons
+   - Style différent pour le bouton actif (fond bleu)
+   - Liste des cartes en colonne (flex-direction: column)
+
+FONCTIONNALITÉS IMPLEMENTÉES:
+✓ Affichage de la liste des profils
+✓Filtrage par statut (Tous, Actifs, Absents)
+✓Changement du statut (bouton dans chaque carte)
+✓Message si aucun profil disponible
+✓Style visuel avec bordures colorées selon le niveau
+
+================================================================================
+                        5. MODULE DASHBOARD
+================================================================================
+
+APPROCHE:
+J'ai créé un module Angular pour structurer le projet comme demandé.
+
+FICHIERS:
+- dashboard.module.ts
+
+DÉTAILS D'IMPLEMENTATION:
+   - Import de NgModule et CommonModule
+   - Import des 3 composants: Dashboard, ProfileCard, StatusBadge
+   - Export des 3 composants pour les rendre disponibles aux autres modules
+   - Les composants sont "standalone: true" donc importables directement
+
+NOTE:
+Les composants sont déclarés comme standalone (Angular 14+), ce qui signifie
+qu'ils peuvent être importés directement sans passer par le module. Le module
+est présent pour respecter la structure demandée et serves de référence.
+
+================================================================================
+                        DÉCISIONS DE CONCEPTION
+================================================================================
+
+1. COMPOSANTS STANDALONE:
+   - J'ai utilisé la syntaxe "standalone: true" pour tous les composants
+   - Cela facilite l'import et le测试 des composants
+   - C'est la approche recommandée depuis Angular 14+
+
+2. TYPES STRICTS:
+   - Utilisation de TypeScript pour typer les données
+   - Les types union pour statut et niveau contraignent les valeurs possibles
+   - Cela prévient les erreurs à la compilation
+
+3. SÉPARATION DES RESPONSABILITÉS:
+   - StatusBadge s'occupe uniquement de l'affichage du badge
+   - ProfileCard s'occupe de l'affichage d'un profil
+   - Dashboard gère la logique de filtrage et les données
+
+4. STYLES:
+   - Utilisation de SCSS (Sass) pour les styles
+   - Utilisation de variables de couleur pour la cohérence
+   - Design épuré avec des cartes et des ombres
+
+5. FONCTIONNALITÉS BONUS:
+   - Filtrage par statut
+   - Changement de statut via bouton
+   - Bordures colorées selon le niveau
+   - Message si liste vide
+
+================================================================================
+                        COMMENT EXÉCUTER LE PROJET
+================================================================================
+
+1. Installer les dépendances:
+   npm install
+
+2. Démarrer le serveur de développement:
+   npm start
+
+3. Ouvrir le navigateur à:
+   http://localhost:4200
+
+================================================================================

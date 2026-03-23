@@ -14,15 +14,15 @@ export class ProfileCardComponent {
   @Input() profile!: Profile;
   @Output() onToggleStatut = new EventEmitter<Profile>();
 
-  // ngStyle : bordure selon le niveau
+
   get niveauStyles(): { [key: string]: string } {
     const borderColors: { [key: string]: string } = {
-      'Junior': '#007bff',
-      'Intermédiaire': '#6f42c1',
-      'Senior': '#ffc107'
+      'Junior': 'blue',
+      'Intermédiaire': 'purple',
+      'Senior': 'goldenrod'
     };
     return {
-      'border-left': `4px solid ${borderColors[this.profile.niveau] || '#ccc'}`
+      'border-left': `4px solid ${borderColors[this.profile.niveau] || 'gray'}`,
     };
   }
 

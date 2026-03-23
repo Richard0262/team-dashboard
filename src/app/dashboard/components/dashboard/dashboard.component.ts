@@ -11,15 +11,15 @@ import { ProfileCardComponent } from '../profile-card/profile-card.component';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  // Données d'exemple - 3 profils minimum
+  // Données d'exemple
   profils: Profile[] = [
-    { nom: 'Alice Martin', poste: 'Développeuse Frontend', statut: 'Actif', niveau: 'Senior' },
-    { nom: 'Bob Dupont', poste: 'Designer UI/UX', statut: 'En pause', niveau: 'Intermédiaire' },
-    { nom: 'Claire Bernard', poste: 'Développeur Backend', statut: 'Absent', niveau: 'Junior' },
-    { nom: 'David Leroy', poste: 'Chef de projet', statut: 'Actif', niveau: 'Senior' }
+    { nom: 'Richard ANAGONOU', poste: 'Développeur Frontend', statut: 'Actif', niveau: 'Senior' },
+    { nom: 'Jean HIMRA', poste: 'Designer UI/UX', statut: 'En pause', niveau: 'Intermédiaire' },
+    { nom: 'Dibi DOBO', poste: 'Développeur Backend', statut: 'Absent', niveau: 'Junior' },
+    { nom: 'Araphat DJ', poste: 'Chef de projet', statut: 'Actif', niveau: 'Senior' }
   ];
 
-  // Filtre actuel (bonus)
+  // Filtre 
   filtreActif: 'Tous' | 'Actifs' | 'Absents' = 'Tous';
 
   // Getter pour filtrer les profils
@@ -33,18 +33,18 @@ export class DashboardComponent {
     }
   }
 
-  // Méthode pour changer le filtre (bonus)
+  // Méthode pour changer le filtre
   setFiltre(filtre: 'Tous' | 'Actifs' | 'Absents'): void {
     this.filtreActif = filtre;
   }
 
-  // Méthode pour changer le statut (bonus)
+  // Méthode pour changer le statut
   toggleStatut(profile: Profile): void {
     if (profile.statut === 'Actif') {
       profile.statut = 'En pause';
     } else if (profile.statut === 'En pause') {
       profile.statut = 'Actif';
     }
-    // Si absent, on ne fait rien
+   
   }
 }
